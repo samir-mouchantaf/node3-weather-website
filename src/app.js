@@ -112,3 +112,4 @@ app.get("*", (req, res) => {
 // 3- Note that you dont want git to track the node_modules since its a generated drectory, u can always do npm instal to get the file again...thats why we will create a new file in the root directory called .gitignore and write inside it the folders we want git to ignore such node_modules/ 
 
 // 4- git add . 	must include the . to add all files
+// git commit -m ......this will commit all staged files and must add a message
