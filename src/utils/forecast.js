@@ -10,6 +10,7 @@ const forecast = (long, lat, callback) =>{
             callback(response.body.error.info, undefined)
         } else {
             const data = {
+                time: response.body.current.observation_time,
                 desc: response.body.current.weather_descriptions[0],
                 wind: response.body.current.wind_speed,
                 temp: response.body.current.temperature,
