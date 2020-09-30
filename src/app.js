@@ -154,3 +154,6 @@ app.get("*", (req, res) => {
 // 4- now the next change has to be insode the app.js file  and change the app.listen(3000, () => {console.log(server running)}), so we will create a new const port = process.env.PORT and used it in the app.listen(port || 3000 ......)
 // 5- back to the app.js file BUT THE ONE IN THE PUBLIC/JS FILE and inside the fetch method, inside the url...remove the http://localhost:3000 and keep the weather?address=.....he mentioned that this is the same concept as the template used in the partials file where we put used the routing with only a / 
 // 6- now lets get the git status by running git status
+// 7- git add .
+// 8- git commit -m "setup app for heroku"
+// 9- git push
