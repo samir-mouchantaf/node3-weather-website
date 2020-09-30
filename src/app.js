@@ -8,9 +8,10 @@ const { response } = require("express");
 
 //since express is a function, we are saving it in an app variable to be able to use
 const app = express();
+const port = process.env.PORT || 3000
 
 // telling the server to listen to port 3000 where we are hosting the server
-app.listen(3000, () => {
+app.listen(port, () => {
 	console.log("App running on port 3000");
 });
 
@@ -113,3 +114,43 @@ app.get("*", (req, res) => {
 
 // 4- git add . 	must include the . to add all files
 // git commit -m ......this will commit all staged files and must add a message
+
+
+// now we will set up SSH and its a secure way for our device to comunicate with github and heroku and transfer the files
+// 1- 1s we will run a command on the terminal as follows:
+// ssh-keygen -t rsa -b -C "samir.mchantaf@gmail.com"
+// so above we are trying to create something called keypairs 
+// -t is type
+// rsa is a secutiry protocol and its doesnt stand for anything
+// -b 4096 means bits and the number after that is the number of bits we specified, 4096 is a standard number and nothing special about it
+// -C has to be capital and its just a comment and we ised the email
+// 2- after hitting enter, we will be asked some questions...first question press enter...second question about the passphrase, we dont want to enter a passphrase so hit enter and hit enter again
+// 3- then do ls -a -l ~/.ssh to check if the new folders are added to the user files
+// you will see id_rsa and id_rsa.pub
+// 4- the we will make sure to establish the connection when the program runs by doing the following:
+// eval $(ssh-agent-s) 
+// 5- then we need to register the file:
+//ssh-add ~/.ssh/id_rsa
+
+//NOW WE WILL PUSH UP OUR APP TO GIT SERVERS
+// 1- get to github.com and login
+// 2- i clidked new -> name: node3-weather-website and left all the other options below blank and public
+// 3- now we will use the code inside the next page under the push an existing rep.........:
+// we will run only the first code that starts with git remote add origin.....
+// the code above will not upload the application to github but will open a gate of comunication
+// then we have to tell github that we are the ones pushing the code, we do that by:
+// going to settings in github -> ssh and gpg keys -> new ssh key -> title: work laptop -> key: (go back to terminal and write cat ~/.ssh/id_rsa.pub, copy the whole result and paste it in the key in github)
+// 4- now we will test our connection in github by typing :
+// ssh -T git@github.com, then type yes
+// 5- then we do the 3rd line of code 'git push -u origin master'
+//						------------------------------------------------------------------------------------------------------
+// NOW WE WILL PUSH THE CODE TO HEROKU
+//because we did open an ssh with github, so not a lot of setup to do...but if you want the details, check angela file on the newsletter
+// 1- so all we need to do is heroku keys:add
+// 2- heroku create mou-weather-application
+// 3- now we have to tell heroku how to tell heroku which file to run just like when we use node and run node app.js, thats what we want herolu to do..
+// so we will go to package.json in vs code and under "scripts", delete the testing line in there and type
+// "start": "node src/app.js"...heroku is not the only thing that reads that script, actually node can as well...if you write npm run start ...where start is the name of the script
+// 4- now the next change has to be insode the app.js file  and change the app.listen(3000, () => {console.log(server running)}), so we will create a new const port = process.env.PORT and used it in the app.listen(port || 3000 ......)
+// 5- back to the app.js file BUT THE ONE IN THE PUBLIC/JS FILE and inside the fetch method, inside the url...remove the http://localhost:3000 and keep the weather?address=.....he mentioned that this is the same concept as the template used in the partials file where we put used the routing with only a / 
+// 6- now lets get the git status by running git status
