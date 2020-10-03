@@ -8,7 +8,7 @@ const { response } = require("express");
 
 //since express is a function, we are saving it in an app variable to be able to use
 const app = express();
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3000;
 
 // telling the server to listen to port 3000 where we are hosting the server
 app.listen(port, () => {
@@ -64,21 +64,22 @@ app.get("/help", (req, res) => {
 
 //weather route
 app.get("/weather", (req, res) => {
-	if (!req.query.address) { //req.query is where the inpiut data is stored, if i add address so it will look for the value stored in the key "address"
-		return res.send({ // returning the error message, using return will also stop the code from continuing to the next line
+	if (!req.query.address) {
+		//req.query is where the inpiut data is stored, if i add address so it will look for the value stored in the key "address"
+		return res.send({
+			// returning the error message, using return will also stop the code from continuing to the next line
 			Error: "Please enter a city in the search field",
 		});
 	}
 
 	// if no error, this code will run
-	// calling geocode using the req.query.address which is the input 
-	geocode(req.query.address, (error, data) => { 
+	// calling geocode using the req.query.address which is the input
+	geocode(req.query.address, (error, data) => {
 		if (error) {
 			return res.send({
 				Error: error,
 			});
 		}
-
 
 		forecast(data.long, data.lat, (error, forecastdata) => {
 			if (error) {
@@ -110,16 +111,15 @@ app.get("*", (req, res) => {
 // 1- git init
 // 2- git status ....this will get you the status of your code, the code or files go through 4 stages...untracked, unstaged, stages and commit....1st is the untracked and this is the files that never were comitted before, unstaged are the files that has been comiited before and then edited after the 1st commit but not commited again, staged are the file that are ready to be commited...commit are the files that has been commited
 
-// 3- Note that you dont want git to track the node_modules since its a generated drectory, u can always do npm instal to get the file again...thats why we will create a new file in the root directory called .gitignore and write inside it the folders we want git to ignore such node_modules/ 
+// 3- Note that you dont want git to track the node_modules since its a generated drectory, u can always do npm instal to get the file again...thats why we will create a new file in the root directory called .gitignore and write inside it the folders we want git to ignore such node_modules/
 
 // 4- git add . 	must include the . to add all files
 // git commit -m ......this will commit all staged files and must add a message
 
-
 // now we will set up SSH and its a secure way for our device to comunicate with github and heroku and transfer the files
 // 1- 1s we will run a command on the terminal as follows:
 // ssh-keygen -t rsa -b -C "samir.mchantaf@gmail.com"
-// so above we are trying to create something called keypairs 
+// so above we are trying to create something called keypairs
 // -t is type
 // rsa is a secutiry protocol and its doesnt stand for anything
 // -b 4096 means bits and the number after that is the number of bits we specified, 4096 is a standard number and nothing special about it
@@ -128,7 +128,7 @@ app.get("*", (req, res) => {
 // 3- then do ls -a -l ~/.ssh to check if the new folders are added to the user files
 // you will see id_rsa and id_rsa.pub
 // 4- the we will make sure to establish the connection when the program runs by doing the following:
-// eval $(ssh-agent-s) 
+// eval $(ssh-agent-s)
 // 5- then we need to register the file:
 //ssh-add ~/.ssh/id_rsa
 
@@ -152,11 +152,24 @@ app.get("*", (req, res) => {
 // so we will go to package.json in vs code and under "scripts", delete the testing line in there and type
 // "start": "node src/app.js"...heroku is not the only thing that reads that script, actually node can as well...if you write npm run start ...where start is the name of the script
 // 4- now the next change has to be insode the app.js file  and change the app.listen(3000, () => {console.log(server running)}), so we will create a new const port = process.env.PORT and used it in the app.listen(port || 3000 ......)
-// 5- back to the app.js file BUT THE ONE IN THE PUBLIC/JS FILE and inside the fetch method, inside the url...remove the http://localhost:3000 and keep the weather?address=.....he mentioned that this is the same concept as the template used in the partials file where we put used the routing with only a / 
+// 5- back to the app.js file BUT THE ONE IN THE PUBLIC/JS FILE and inside the fetch method, inside the url...remove the http://localhost:3000 and keep the weather?address=.....he mentioned that this is the same concept as the template used in the partials file where we put used the routing with only a /
 // 6- now lets get the git status by running git status
 // 7- git add .
 // 8- git commit -m "setup app for heroku"
 // 9- git push
-// 10- now heroku created a remote for us just like the origin remote that git created for us...to check that type git remote, you will see heroku and origin
+// 10- now heroku created a remote for us just like the origin remote that git created for us...to check that type 'git remote', you will see heroku and origin
 // 11- now lets push the heroku master to git as well : git push heroku master
 // 12- wesbite created is : https://mou-weather-application.herokuapp.com
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+//															ADDING NODEMON TO PACKAGE.JSON
+
+// we will now add nodemon to package.json so that whenever we can start it just by typing 'npm run dev' dev is just the name of the script and its optional to name it whatever
+//u want, we can do that by writing a script in package.json after the start property.
+
+// 1- in package.json after the start script type: "dev": "nodemon src/app.js -e js,hbs"
+// 2- in the terminal: 'npm run dev' and that will start the server and nodemon
+
+
+// now he was explaining the problems with the global dependencies that if we push our code to github and someone was trying to clone it, nodemon will not work because it not a dependency...he sugests that we uninstall it using "npm uninstall -g nodemon"  and then install it using 'npm i nodemon --save-dev' , the dev part is just to make sure it is not included in deployment, which means that herok will not have it and that saves time and space
+// so now if you try to run nodemon from the terminal it will work, but the script npm run start will work
